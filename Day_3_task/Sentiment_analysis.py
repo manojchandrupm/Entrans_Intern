@@ -8,7 +8,10 @@ os.makedirs(output_dir, exist_ok=True)
 output_file = os.path.join(output_dir, "Sentiment_analysis_report.txt")
 
 ###### Load pretrained model name
-model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+    ## 2 class model
+# model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+    ## 3 class model
+model_name = "cardiffnlp/twitter-roberta-base-sentiment"
 
 ###### Load pretrained model
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
@@ -35,9 +38,21 @@ while True:
     ### the "torch.max" will find out the max value and return its position
     confidence, predicted_class = torch.max(probs, dim=1)
 
-    labels = ["Negative", "Positive"]
+    ## 2 class labels
+    # labels = ["Negative", "Positive"]
+    ## 3 class labels
+    labels = ["Negative", "Neutral", "Positive"]
 
-    sentiment = labels[predicted_class]
+    # for positive and neutral there is small difference only, so i have manually added the neutral threshold
+    neg, neu, pos = probs[0]
+    if neu > 0.4:
+        sentiment = "Neutral"
+    elif pos > neg:
+        sentiment = "Positive"
+    else:
+        sentiment = "Negative"
+
+    # sentiment = labels[predicted_class]
 
     with open(output_file, "a", encoding= "UTF8") as file:
         file.write(f"Text : {text}\nSentiment: {sentiment}\nConfidence Score: {round(confidence.item(), 2)}\n\n")

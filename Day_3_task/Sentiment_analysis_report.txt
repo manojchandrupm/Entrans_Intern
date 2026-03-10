@@ -22,3 +22,43 @@ Text : What a wonderful experience! I would recommend it to everyone.
 Sentiment: Positive
 Confidence Score: 1.0
 
+Text : I absolutely loved this app!
+Sentiment: Positive
+Confidence Score: 0.99
+
+Text : The app is okay; it works but nothing special.
+Sentiment: Positive
+Confidence Score: 0.79
+
+Text : The service was acceptable, neither good nor bad.
+Sentiment: Positive
+Confidence Score: 0.82
+
+Text : I regret buying this; it’s a waste of money.
+Sentiment: Negative
+Confidence Score: 0.95
+
+Text : The product works as expected. Nothing good, nothing bad.
+Sentiment: Positive
+Confidence Score: 0.58
+
+Text : The product works as expected. Nothing good, nothing bad.
+Sentiment: Positive
+Confidence Score: 0.58
+
+Text : It’s a regular product; it does what it promises.
+Sentiment: Neutral
+Confidence Score: 0.7
+
+Text : The service was terrible and frustrating.
+Sentiment: Negative
+Confidence Score: 0.98
+
+Text : The product exceeded my expectations.
+Sentiment: Positive
+Confidence Score: 0.47
+
+Text : It’s a regular product; it does what it promises.
+Sentiment: Neutral
+Confidence Score: 0.7
+
