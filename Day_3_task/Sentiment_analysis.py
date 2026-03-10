@@ -1,6 +1,11 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import torch.nn.functional as F
+import os
+
+output_dir = r"D:\Entrans_intern\Day_3_task"
+os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, "Sentiment_analysis_report.txt")
 
 ###### Load pretrained model name
 model_name = "distilbert-base-uncased-finetuned-sst-2-english"
@@ -34,6 +39,9 @@ while True:
 
     sentiment = labels[predicted_class]
 
+    with open(output_file, "a", encoding= "UTF8") as file:
+        file.write(f"Text : {text}\nSentiment: {sentiment}\nConfidence Score: {round(confidence.item(), 2)}\n\n")
     print("Sentiment:", sentiment)
     print("Confidence Score:", round(confidence.item(), 2))
     print()
+

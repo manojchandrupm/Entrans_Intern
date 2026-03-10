@@ -1,0 +1,24 @@
+Text : I really enjoyed using this application; it works flawlessly.
+Sentiment: Positive
+Confidence Score: 1.0
+
+Text : This product exceeded my expectations and I’m very happy with it.
+Sentiment: Positive
+Confidence Score: 1.0
+
+Text : The customer service was excellent and very helpful.
+Sentiment: Positive
+Confidence Score: 1.0
+
+Text : I am very disappointed with this product; it didn’t work at all.
+Sentiment: Negative
+Confidence Score: 1.0
+
+Text : This service is not worth the money.
+Sentiment: Negative
+Confidence Score: 1.0
+
+Text : What a wonderful experience! I would recommend it to everyone.
+Sentiment: Positive
+Confidence Score: 1.0
+
