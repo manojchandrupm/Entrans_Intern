@@ -1,0 +1,22 @@
+Artificial Intelligence (AI)
+    └─ Machine Learning (ML)
+           └─ Deep Learning (DL)
+                 └─ Large Language Models (LLMs)
+Natural Language Processing (NLP) often uses ML and DL for tasks
+
+Artificial Intelligence:
+ 	- it is a computer based field focus on creating software and Machines , that will trying to act smart like humans.
+
+Machine Learning :
+ 	- it is subset of AI , the machine will learn from data instead of programmed rules.
+ 	- which is used for prediction and decision making.
+
+Deep Learning :
+ 	- it is a subset of machine learning where DL will have the artificial neural network to learn complex patterns from data.
+ 	- the complex data like speech, image and text.
+
+Large Language Models:
+ 	- it is a type of Deep learning model were the model is trained on the large text data to understand and generate the human language.
+
+Natural Language Processing:
+ 	- it is subset of Ai and used in ml and dl to understand and generate response in human language.
