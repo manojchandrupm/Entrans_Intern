@@ -57,16 +57,29 @@
 #     print(ent.text, ent.label_)
 
 ###### Hugging Face Transformers ######____________________________________________________________________
-from transformers import AutoTokenizer, AutoModel
-import torch
+# from transformers import AutoTokenizer, AutoModel
+# import torch
+#
+# tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+# model = AutoModel.from_pretrained("bert-base-uncased")
+#
+# sentence = "Artificial Intelligence is powerful"
+#
+# inputs = tokenizer(sentence, return_tensors="pt")
+# outputs = model(**inputs)
+#
+# embedding = outputs.last_hidden_state
+# print(embedding.shape)
 
-tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-model = AutoModel.from_pretrained("bert-base-uncased")
+###### FastAPI ######
+from fastapi import FastAPI
 
-sentence = "Artificial Intelligence is powerful"
+app = FastAPI()
 
-inputs = tokenizer(sentence, return_tensors="pt")
-outputs = model(**inputs)
+@app.get("/")
+def home():
+    return {"message": "Hello AI"}
 
-embedding = outputs.last_hidden_state
-print(embedding.shape)
+@app.get("/square/{num}")
+def square(num: int):
+    return {"square": num * num}

@@ -6,7 +6,7 @@ with open("Rag_doc.txt", "r", encoding="utf-8") as file:
     text = file.read()
 
 ##### splitting into chunks
-chunk_size = 300
+chunk_size = 100
 chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
 
 ##### embedding the chunks using the pretrained model
@@ -30,7 +30,7 @@ for chunk in chunk_embeddings:
 
 # similarities = np.array(similarity, dtype=float)
 
-#### the below line sort the similarity list values and return the index based on the sorted values
+#### the "np.argsort" line will sort the similarity list values and return the index based on the sorted values
 top_indices = np.argsort(similarity)[-3:][::-1]
     # sorted_indices = np.argsort(similarity)
     #

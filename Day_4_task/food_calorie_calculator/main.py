@@ -8,7 +8,7 @@ food_calories = {
     "apple": 52,
     "banana": 89,
     "rice": 130,
-    "chicken_breast": 165,
+    "chicken breast": 165,
     "egg": 155,
     "milk": 42,
     "bread": 265,
@@ -29,10 +29,10 @@ def estimate_daily_calories(text):
 
 app1 = FastAPI()
 
-class food_item(BaseModel):
+class FoodItem(BaseModel):
     food_description : str
 
 @app1.post("/Food_Calories_calculator")
-def food_calories_calculator(data : food_item):
+def food_calories_calculator(data : FoodItem):
     calories = estimate_daily_calories(data.food_description)
     return {"estimated_calories": calories}

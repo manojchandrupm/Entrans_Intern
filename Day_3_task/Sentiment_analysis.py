@@ -44,15 +44,15 @@ while True:
     labels = ["Negative", "Neutral", "Positive"]
 
     # for positive and neutral there is small difference only, so i have manually added the neutral threshold
-    neg, neu, pos = probs[0]
-    if neu > 0.4:
-        sentiment = "Neutral"
-    elif pos > neg:
-        sentiment = "Positive"
-    else:
-        sentiment = "Negative"
+    # neg, neu, pos = probs[0]
+    # if neu > 0.4:
+    #     sentiment = "Neutral"
+    # elif pos > neg:
+    #     sentiment = "Positive"
+    # else:
+    #     sentiment = "Negative"
 
-    # sentiment = labels[predicted_class]
+    sentiment = labels[predicted_class]
 
     with open(output_file, "a", encoding= "UTF8") as file:
         file.write(f"Text : {text}\nSentiment: {sentiment}\nConfidence Score: {round(confidence.item(), 2)}\n\n")

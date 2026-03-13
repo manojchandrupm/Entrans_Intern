@@ -11,6 +11,8 @@ def get_activity_level(days):
 def calculate_bmr(age, gender, height_cm, weight_kg):
     if gender.lower() == "male":
         bmr = (10 * weight_kg) + (6.25 * height_cm) - (5 * age) + 5
+    elif gender.lower() not in ["male", "female"]:
+        raise ValueError("Gender must be male or female")
     else:
         bmr = (10 * weight_kg) + (6.25 * height_cm) - (5 * age) - 161
 

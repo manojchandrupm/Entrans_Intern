@@ -62,3 +62,43 @@ Text : It’s a regular product; it does what it promises.
 Sentiment: Neutral
 Confidence Score: 0.7
 
+Text : I absolutely loved this app!
+Sentiment: Positive
+Confidence Score: 0.99
+
+Text : I think this product is average, not bad but not great either.
+Sentiment: Negative
+Confidence Score: 0.88
+
+Text : I am very disappointed with this product; it didn’t work at all.
+Sentiment: Negative
+Confidence Score: 0.98
+
+Text : It’s a regular product; it does what it promises.
+Sentiment: Neutral
+Confidence Score: 0.7
+
+Text : The movie was fine, nothing extraordinary.
+Sentiment: Positive
+Confidence Score: 0.58
+
+Text : Enter a sentence  or (type 'exit' to quit): 
+Sentiment: Neutral
+Confidence Score: 0.65
+
+Text : The product works as expected.
+Sentiment: Positive
+Confidence Score: 0.55
+
+Text : The meeting is scheduled for tomorrow at 10 AM.
+Sentiment: Neutral
+Confidence Score: 0.93
+
+Text : The product was delivered yesterday.
+Sentiment: Neutral
+Confidence Score: 0.76
+
+Text : The weather is cloudy today.
+Sentiment: Neutral
+Confidence Score: 0.74
+
