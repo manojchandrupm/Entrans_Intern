@@ -1,63 +1,66 @@
-from langchain_text_splitters import CharacterTextSplitter
-from database import collection
-from langchain.embeddings import HuggingFaceEmbeddings
+from sentence_transformers import SentenceTransformer
 import numpy as np
 from transformers import pipeline
+from database import collection
 
-def chunk_documents():
-    docs = collection.find()
-    text_chunks = []
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
-    splitter = CharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50
+docs = collection.find()
+
+for doc in docs:
+    content = doc["content"]
+
+    embedding = model.encode(content).tolist()
+
+    collection.update_one(
+        {"_id": doc["_id"]},
+        {"$set": {"embedding": embedding}}
     )
 
+def cosine_similarity(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+def retrieve_docs(query):
+
+    query_embedding = model.encode(query)
+
+    docs = collection.find()
+
+    scores = []
+
     for doc in docs:
-        content = doc["content"]
-        chunks = splitter.split_text(content)
-        for chunk in chunks:
-            text_chunks.append({
-                "filename": doc["filename"],
-                "chunk": chunk
-            })
-    return text_chunks
+        doc_embedding = np.array(doc["embedding"])
+        score = cosine_similarity(query_embedding, doc_embedding)
 
-print(chunk_documents())
+        scores.append((score, doc["content"]))
 
-# Use Olamma embeddings model
-embeddings_model = HuggingFaceEmbeddings(model_name="olamma/embedding-model")  # example
+    scores.sort(reverse=True)
 
-def get_embedding(text):
-    return embeddings_model.embed_query(text)
+    top_docs = [doc for _, doc in scores[:3]]
 
-text_chunks = chunk_documents()
+    return top_docs
 
-for chunk in text_chunks:
-    vector = get_embedding(chunk['chunk'])
-    collection.insert_one({
-        "chunk_id": chunk['filename'],
-        "text": chunk['chunk'],
-        "embedding": vector
-    })
+generator = pipeline("text2text-generation", model="google/flan-t5-base")
 
-def search(query, k=3):
-    q_emb = get_embedding(query)
-    # Compute cosine similarity manually
-    results = []
-    for doc in collection.find():
-        vec = np.array(doc['embedding'])
-        sim = np.dot(q_emb, vec) / (np.linalg.norm(q_emb) * np.linalg.norm(vec))
-        results.append((sim, doc['text']))
-    results.sort(key=lambda x: x[0], reverse=True)
-    return [text for _, text in results[:k]]
+def generate_answer(query):
 
-# HuggingFace Olamma model for text generation
-pipe = pipeline("text-generation", model="olamma/your-olamma-model")
-def answer(query):
-    context = "\n".join(search(query, k=3))
-    prompt = f"Use the following context to answer the question:\n\n{context}\n\nQuestion: {query}\nAnswer:"
-    output = pipe(prompt, max_length=512, do_sample=True)
-    return output[0]['generated_text']
+    docs = retrieve_docs(query)
 
-print(answer("What is the content of the uploaded PDF?"))
+    context = "\n".join(docs)
+
+    prompt = f"""
+    Answer the question based on the context.
+
+    Context:
+    {context}
+
+    Question:
+    {query}
+
+    Answer:
+    """
+    result = generator(prompt, max_length=200)
+
+    return result[0]["generated_text"]
+
+# print(generate_answer("what AI"))

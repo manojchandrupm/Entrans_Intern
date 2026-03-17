@@ -4,7 +4,7 @@ import shutil
 from content_extracter import extract_text
 from database import collection
 from pydantic import BaseModel
-from Rag_bot import answer_question
+from Rag_bot_1 import generate_answer
 app = FastAPI()
 
 upload_file_dir = "upload_file"
@@ -57,5 +57,5 @@ class Query(BaseModel):
     question: str
 
 @app.post("/chat")
-def chat(question: Query):
-    return {"bot answer based on the uploaded doc ":answer_question(question)}
+def chat(question: str):
+    return {"Bot answer based on the uploaded doc:": generate_answer(question)}
