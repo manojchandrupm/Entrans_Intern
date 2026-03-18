@@ -1,14 +1,18 @@
 import requests
 import ollama
 import json
+from sympy import sympify
+from sympy.core.sympify import SympifyError
 
 ###### ------ claculator tool
 ## eval() is a python built-in function to calculate the expression
 def calculator(expression):
     try:
-        result = eval(expression)
+        result = sympify(expression)
         return str(result)
-    except:
+    except SympifyError:
+        return "Invalid mathematical expression"
+    except Exception:
         return "Error in calculation"
 
 ###### ------ weather tool
@@ -58,9 +62,13 @@ def tool_agent(user_query):
 
 ###### ------ Tool choosing
 def agent(user_query):
+
     llm_output = tool_agent(user_query)
     print(llm_output)
-    decision = json.loads(llm_output)
+    try:
+        decision = json.loads(llm_output)
+    except:
+        return "Error parsing LLM output"
     result =[]
     for d in decision:
         tool = d['tool']
@@ -79,6 +87,6 @@ while True:
     if user_query.lower() in ["exit", "quit","q"]:
         break
     result = agent(user_query)
-    print(result)
+    print(f"bot:{result}")
 
 #eg query: What’s the weather in Madurai and calculate 34 * 8?
