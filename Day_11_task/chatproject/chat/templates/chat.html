@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat App</title>
+</head>
+<body>
+
+<h2>Real-Time Chat</h2>
+
+<input id="msg" placeholder="Type message">
+<button onclick="sendMsg()">Send</button>
+
+<div id="chat"></div>
+
+<script>
+let socket;
+let roomName = "{{ username }}"
+
+function connect() {
+    socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomName}/`);
+    
+    socket.onopen = function() {
+        console.log("Connected to server");
+    };
+
+    socket.onmessage = function(e) {
+        let data = JSON.parse(e.data);
+        let chatDiv = document.getElementById("chat");
+        chatDiv.innerHTML += "<p>" +"BOT: "+ data.message + "</p>";
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+    };
+
+    socket.onerror = function(error) {
+        console.log("WebSocket error:", error);
+    };
+
+    socket.onclose = function() {
+        console.log("Disconnected. Reconnecting...");
+        setTimeout(connect, 2000);
+    };
+}
+
+connect();
+
+function sendMsg() {
+    let msg = document.getElementById("msg").value;
+
+    if (msg.trim() === "") return;
+    
+    let chatDiv = document.getElementById("chat");
+    chatDiv.innerHTML += "<p>" +"YOU: "+ msg + "</p>";
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ "message": msg }));
+    }
+
+    document.getElementById("msg").value = "";
+}
+</script>
+
+</body>
+</html>
