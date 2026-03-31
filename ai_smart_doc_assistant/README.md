@@ -33,7 +33,8 @@ LLM / Embeddings: Ollama (local models)
 Vector Database: Qdrant
 PDF Processing: PyMuPDF
 Frontend: Basic HTML (for testing)
-⚙️ How It Works
+
+## ⚙️ How It Works
 ### 1. Document Ingestion
 Upload a PDF
 Extract text page by page
@@ -45,6 +46,20 @@ User asks a question
 Convert question into embedding
 Perform similarity search in Qdrant
 Return top matching chunks with metadata
+How to use (frontend flow)
+## How to Use
+
+1. Open the application in browser
+```
+   http://127.0.0.1:8000/
+```
+3. Upload a PDF document.
+
+4. Enter your question in the input box.
+
+5. Click "Ask".
+
+6. View the generated answer and source references.
 
 ## 📂 Project Structure
 ```
