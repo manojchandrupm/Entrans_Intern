@@ -8,7 +8,6 @@ qdrant_client = QdrantClient(
     api_key=env.QDRANT_API_KEY,
 )
 
-
 def store_chunks_in_qdrant(chunks: list):
     if not chunks:
         return
@@ -31,13 +30,13 @@ def store_chunks_in_qdrant(chunks: list):
         )
 
     qdrant_client.create_collection(
-        collection_name="doc_assistant_collection",
+        collection_name=env.COLLECTION_NAME,
         vectors_config=VectorParams(
             size=vector_size,
             distance=Distance.COSINE
         )
     )
     qdrant_client.upsert(
-        collection_name="doc_assistant_collection",
+        collection_name=env.COLLECTION_NAME,
         points=points
     )

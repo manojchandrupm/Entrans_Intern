@@ -29,4 +29,5 @@ class QueryResponse(BaseModel):
     matches: List[RetrievedMatch]
 
 class QueryReply(BaseModel):
-    bot: str
+    answer : str
+    sources : str

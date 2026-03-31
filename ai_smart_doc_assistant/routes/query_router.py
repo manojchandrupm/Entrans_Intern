@@ -1,6 +1,4 @@
 from fastapi import APIRouter, HTTPException
-from pymupdf import message
-
 from models.schemas import QueryRequest, QueryResponse, RetrievedMatch,QueryReply
 from services.retrieval_service import retrieve_similar_chunks
 from services.user_query_response_service import generate_query_response
@@ -23,10 +21,15 @@ async def query_document(payload: QueryRequest):
             matches=[RetrievedMatch(**match) for match in matches]
         )
 
-        answer = await generate_query_response(query_reply.model_dump())
+        response = await generate_query_response(query_reply.model_dump())
+        parts = response.split("Sources:")
+
+        answer = parts[0].replace("Answer:", "").strip()
+        sources = parts[1].strip() if len(parts) > 1 else ""
 
         return QueryReply(
-            bot=answer
+            answer=answer,
+            sources=sources
         )
 
     except Exception as e:
