@@ -4,172 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Smart Document Assistant</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 900px;
-            margin: 40px auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: #222;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        input[type="file"],
-        textarea {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 15px;
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 10px 18px;
-            font-size: 15px;
-            border: none;
-            background: #2563eb;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-        .status, .answer-box, .sources-box {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 6px;
-            background: #f9fafb;
-            white-space: pre-wrap;
-        }
-
-        .sources-box {
-            background: #eef6ff;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>AI Smart Document Assistant</h1>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>AI Doc Bot</h2>
+            <p class="subtitle">Upload a PDF and chat with it</p>
 
-        <div class="card">
-            <h2>Upload PDF</h2>
-            <input type="file" id="pdfFile" accept=".pdf" />
-            <button onclick="uploadPDF()">Upload Document</button>
-            <div class="status" id="uploadStatus">No file uploaded yet.</div>
-        </div>
+            <div class="upload-card">
+                <label for="pdfFile" class="upload-label">Choose PDF</label>
+                <input type="file" id="pdfFile" accept=".pdf" />
+                <button id="uploadBtn">Upload Document</button>
+                <div id="uploadStatus" class="upload-status">No document uploaded yet.</div>
+            </div>
+        </aside>
 
-        <div class="card">
-            <h2>Ask Question</h2>
-            <textarea id="questionInput" placeholder="Ask something about the uploaded document..."></textarea>
-            <button onclick="askQuestion()">Ask</button>
-            <div class="answer-box" id="answerBox">Answer will appear here...</div>
-            <div class="sources-box" id="sourcesBox">Sources will appear here...</div>
-        </div>
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <header class="chat-header">
+                <h1>Document Chat Assistant</h1>
+            </header>
+
+            <section id="chatBox" class="chat-box">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Hi! Upload a PDF and ask me questions about it.
+                    </div>
+                </div>
+            </section>
+
+            <footer class="chat-input-area">
+                <textarea
+                    id="questionInput"
+                    placeholder="Ask something about your uploaded document..."
+                    rows="2"
+                ></textarea>
+                <button id="sendBtn">Send</button>
+            </footer>
+        </main>
     </div>
 
-    <script>
-        async function uploadPDF() {
-            const fileInput = document.getElementById("pdfFile");
-            const uploadStatus = document.getElementById("uploadStatus");
-
-            if (!fileInput.files.length) {
-                uploadStatus.textContent = "Please select a PDF file.";
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-
-            try {
-                uploadStatus.textContent = "Uploading and processing PDF...";
-
-                const response = await fetch("/upload/", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    uploadStatus.textContent = data.detail || "Upload failed.";
-                    return;
-                }
-
-                uploadStatus.textContent = `Uploaded successfully: ${data.filename}
-Total chunks stored: ${data.total_chunks}`;
-            } catch (error) {
-                uploadStatus.textContent = "Error uploading PDF.";
-                console.error(error);
-            }
-        }
-
-        async function askQuestion() {
-            const question = document.getElementById("questionInput").value.trim();
-            const answerBox = document.getElementById("answerBox");
-            const sourcesBox = document.getElementById("sourcesBox");
-
-            if (!question) {
-                answerBox.textContent = "Please enter a question.";
-                return;
-            }
-
-            answerBox.textContent = "Getting answer...";
-            sourcesBox.textContent = "Loading sources...";
-
-            try {
-                const response = await fetch("/query/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        question: question,
-                        top_k: 3
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    answerBox.textContent = data.detail || "Failed to get answer.";
-                    sourcesBox.textContent = "";
-                    return;
-                }
-
-                answerBox.textContent = data.answer || "No answer returned.";
-                sourcesBox.textContent = data.sources
-
-            } catch (error) {
-                answerBox.textContent = "Error while asking question.";
-                sourcesBox.textContent = "";
-                console.error(error);
-            }
-        }
-    </script>
+    <script src="/static/app.js"></script>
 </body>
 </html>

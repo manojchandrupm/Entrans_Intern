@@ -11,9 +11,14 @@ class UploadResponse(BaseModel):
     filename: str
     total_chunks: int
 
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
 class QueryRequest(BaseModel):
     question: str
     top_k: int = 3
+    chat_history: List[ChatMessage] = []
 
 class RetrievedMatch(BaseModel):
     chunk_id: str

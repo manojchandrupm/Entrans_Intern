@@ -8,12 +8,27 @@ qdrant_client = QdrantClient(
     api_key=env.QDRANT_API_KEY,
 )
 
+def ensure_collection_exists(vector_size: int):
+    collections = qdrant_client.get_collections().collections
+    collection_names = [collection.name for collection in collections]
+
+    if env.COLLECTION_NAME not in collection_names:
+        qdrant_client.create_collection(
+            collection_name=env.COLLECTION_NAME,
+            vectors_config=VectorParams(
+                size=vector_size,
+                distance=Distance.COSINE
+            )
+        )
+
 def store_chunks_in_qdrant(chunks: list):
     if not chunks:
         return
 
     points = []
     vector_size = len(chunks[0]["embedding"])
+    ensure_collection_exists(vector_size)
+
     for idx, chunk in enumerate(chunks):
         points.append(
             PointStruct(
@@ -28,14 +43,6 @@ def store_chunks_in_qdrant(chunks: list):
                 }
             )
         )
-
-    qdrant_client.create_collection(
-        collection_name=env.COLLECTION_NAME,
-        vectors_config=VectorParams(
-            size=vector_size,
-            distance=Distance.COSINE
-        )
-    )
     qdrant_client.upsert(
         collection_name=env.COLLECTION_NAME,
         points=points
