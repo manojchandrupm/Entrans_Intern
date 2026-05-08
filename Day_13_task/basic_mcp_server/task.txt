@@ -1,0 +1,23 @@
+Build a Basic MCP Server
+Goal
+Create a custom MCP server exposing tools like:
+
+calculator
+weather
+file reader
+system info
+
+The AI agent should dynamically discover and use these tools.
+
+Skills Learned
+MCP architecture
+Tool schemas
+JSON-RPC
+Async communication
+AI tool calling
+
+Stack
+Python
+FastAPI
+MCP SDK
+Ollama/OpenAI-compatible LLM
